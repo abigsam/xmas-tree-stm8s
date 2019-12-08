@@ -1,0 +1,6 @@
+# Exclude all except *.stw and .stp
+
+/*
+!.gitignore
+!*.stw
+!*.stp

@@ -1,0 +1,12 @@
+;	STMicroelectronics Workspace file
+
+[Version]
+Keyword=ST7Workspace-V0.7
+
+[Project0]
+Filename=xmas.stp
+Dependencies=
+[Options]
+ActiveProject=xmas
+ActiveConfig=Debug
+AddSortedElements=1
