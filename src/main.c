@@ -27,7 +27,7 @@
 
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s.h"
+#include "bsp.h"
 #include "pt.h"
 
 /* Private defines -----------------------------------------------------------*/
@@ -36,6 +36,7 @@
 
 void main(void)
 {
+  bsp_init();
   /* Infinite loop */
   while (1)
   {
