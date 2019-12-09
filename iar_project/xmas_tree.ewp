@@ -1661,6 +1661,9 @@
     <group>
         <name>src</name>
         <file>
+            <name>$PROJ_DIR$\..\src\bsp.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\src\main.c</name>
         </file>
         <file>
