@@ -1,0 +1,42 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug GDBServer",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "Path to the out file",
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "${config:iarvsc.debugger}",
+            "debugServerPath": "${config:iarvsc.gdbServer}",
+            "debugServerArgs": "-if swd -singlerun -strict -endian little -speed auto -port 3333 -device ${config:iarvsc.device} -vd -strict -halt",
+            "serverStarted": "Connected\\ to\\ target",
+            "serverLaunchTimeout": 5000,
+            "filterStderr": false,
+            "filterStdout": true,
+            "setupCommands": [
+                {
+                    "text": "target remote localhost:3333"
+                },
+                {
+                    "text": "monitor flash breakpoints = 1"
+                },
+                {
+                    "text": "monitor flash download = 1"
+                },
+                {
+                    "text": "monitor reset"
+                },
+                {
+                    "text": "load \\\"Path to the out file\\\""
+                },
+                {
+                    "text": "monitor reset"
+                }
+            ]
+        }
+    ]
+}

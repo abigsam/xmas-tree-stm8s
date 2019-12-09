@@ -1,0 +1,9 @@
+{
+    "iarvsc.workbench": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.3",
+    "iarvsc.compiler": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.3\\stm8\\bin\\iccstm8.exe",
+    "iarvsc.ewp": "d:\\github\\xmas-tree-stm8s\\iar_project\\xmas_tree.ewp",
+    "iarvsc.configuration": "Debug",
+    "files.associations": {
+        "stm8s.h": "c"
+    }
+}
