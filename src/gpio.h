@@ -21,6 +21,8 @@
 #define GLEDS_GPIO_2        (GPIO_PIN_5)
 #define GLEDS_GPIO_3        (GPIO_PIN_6)
 #define GLEDS_GPIO_4        (GPIO_PIN_7)
+#define GLEDS_GPIO_MASK     ( GLEDS_GPIO_0 | GLEDS_GPIO_1 | GLEDS_GPIO_2 | GLEDS_GPIO_3 | GLEDS_GPIO_4 )
+#define GLEDS_MAX_NUM       ((uint16_t) 20)
 //RGB LEDs
 #define RGB_LEDS_PORT       (GPIOD)
 #define RGB_LEDS_PIN        (GPIO_PIN_3)
@@ -41,10 +43,11 @@
 #define BOOST_EN_PIN        (GPIO_PIN_5)
 
 //Macroses
-#define GPIO_GET(port,pin)              ( port->IDR & (uint8_t)pin )
-#define GPIO_SET(port,pin)              { port->ODR |= (uint8_t)pin; }
-#define GPIO_RESET(port,pin)            { port->ODR &= ~(uint8_t)pin; }
-#define GPIO_CONTROL(port,pin,state)    { if (state) GPIO_SET(port,pin); \
-                                          else GPIO_RESET(port,pin); }
-
+#define GPIO_GET(port,pin)              ( port->IDR & ((uint8_t)(pin)) )
+#define GPIO_SET(port,pin)              { port->ODR |= (uint8_t)(pin); }
+#define GPIO_RESET(port,pin)            { port->ODR &= (uint8_t)(~pin); }
+#define GPIO_CONTROL(port,pin,state)    { if (state) { GPIO_SET(port,pin); } \
+                                          else { GPIO_RESET(port,pin); } }
+#define GPIO_TO_HIZ(port,pin,state)     { if (state) { port->DDR &= (uint8_t)(~pin); } \
+                                          else { port->DDR |= (uint8_t)(pin); } }
 #endif //__GPIO_H
