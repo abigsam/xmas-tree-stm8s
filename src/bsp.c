@@ -46,10 +46,33 @@ void bsp_init(void)
               LS_SCHMIT_TRIGGER,
               DISABLE);
     //
-    //Configure clock, default using HSI (16 MHz)
+    // Configure clock: default using HSI (16 MHz)
     // MASTERCLK = HSI/8 (for timers and pheripherial)
     // CPUCLK = MASTERCLK/1
+    // Use MASTERCLK = HSI/1
+    CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV1);
 }
+
+
+/**
+ * @brief 
+ * 
+ */
+void bsp_sleep(void)
+{
+
+}
+
+
+/**
+ * @brief 
+ * 
+ */
+void bsp_wakeup(void)
+{
+
+}
+
 
 /**
  * @brief Enable/disable green LED
@@ -77,6 +100,5 @@ void green_led(FunctionalState led_st, uint16_t num)
     GREEN_LEDS_PORT->ODR = odr;
     GREEN_LEDS_PORT->CR1 = cr1;
 }
-
 
 

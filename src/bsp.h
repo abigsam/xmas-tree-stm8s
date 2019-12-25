@@ -30,6 +30,8 @@
 
 // BSP functiones
 void bsp_init(void);
+void bsp_sleep(void);
+void bsp_wakeup(void);
 void green_led(FunctionalState led_st, uint16_t num);
 
 
