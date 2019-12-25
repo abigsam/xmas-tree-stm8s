@@ -15,6 +15,7 @@
 
 #include "stm8s.h"
 #include "pt.h"
+#include "gpio.h"
 
 //Defines
 #define GREEN_LEDS_NUM          ( GLEDS_MAX_NUM ) //Number of green LEDs
