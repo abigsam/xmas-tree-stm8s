@@ -36,10 +36,18 @@
 
 void main(void)
 {
+  uint16_t cnt = 0u;
+  volatile uint32_t delay = 0u;
+
   bsp_init();
   /* Infinite loop */
   while (1)
   {
+    for(cnt = 0u; cnt < GREEN_LEDS_NUM; cnt++)
+    {
+      green_led(ENABLE, cnt);
+      for(delay = 0u; delay < 10000u; delay++) {}
+    }
   }
   
 }
