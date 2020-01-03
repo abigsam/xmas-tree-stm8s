@@ -29,6 +29,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8s_it.h"
+#include "bsp.h"
 
 /** @addtogroup Template_Project
   * @{
@@ -38,6 +39,9 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+extern uint8_t rgb_codes[RGB_LEDS_NUM*RGB_LED_BITS];
+extern uint8_t rgb_data_cnt;
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
@@ -274,11 +278,33 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   * @param  None
   * @retval None
   */
+#ifdef _COSMIC_
+ @svlreg INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
+#else
  INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
+#endif
  {
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+   //tim2_upd_irq();
+
+   //Reset update even flag
+   TIM2->SR1 &= ~TIM2_SR1_UIF;
+   //Update channel 2 compare registers
+   TIM2->CCR2H = 0u;
+   TIM2->CCR2L = *(rgb_codes + rgb_data_cnt);
+   //Check for end, if true disable TIM2 interrupt and
+   // return when the last code will be sent
+   if (0u == rgb_data_cnt)
+   {
+      TIM2->IER &= ~TIM2_IER_UIE;
+      TIM2->CCMR2 = (uint8_t)((uint8_t)(TIM2->CCMR2 & (uint8_t)(~TIM2_CCMR_OCM))  
+                          | (uint8_t)TIM2_FORCEDACTION_INACTIVE);
+      return;
+   }
+   //Decrement counter
+   rgb_data_cnt--;
  }
 
 /**
@@ -489,6 +515,8 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+   tim4_upd_irq();
+   TIM4->SR1 &= ~TIM4_SR1_UIF;
  }
 #endif /* (STM8S903) || (STM8AF622x)*/
 
