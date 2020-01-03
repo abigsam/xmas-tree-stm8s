@@ -26,10 +26,10 @@
 //RGB LEDs
 #define RGB_LEDS_PORT       (GPIOD)
 #define RGB_LEDS_PIN        (GPIO_PIN_3)
-#define RGB_LEDS_PWR_PORT   (GPIOB)
-#define RGB_LEDS_PWR_PIN    (GPIO_PIN_5)
+#define RGB_LEDS_PWR_PORT   (GPIOA)
+#define RGB_LEDS_PWR_PIN    (GPIO_PIN_3)
 //Light sensor
-#define LS_POWER_EN_PORT    (GPIOB)
+#define LS_POWER_EN_PORT    (GPIOD)
 #define LS_POWER_EN_PIN     (GPIO_PIN_4)
 #define LS_OUTPUT_PORT      (GPIOD)
 #define LS_OUTPUT_PIN       (GPIO_PIN_2)
