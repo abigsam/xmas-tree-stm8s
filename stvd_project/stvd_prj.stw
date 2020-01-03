@@ -8,5 +8,5 @@ Filename=xmas.stp
 Dependencies=
 [Options]
 ActiveProject=xmas
-ActiveConfig=Debug
+ActiveConfig=Release
 AddSortedElements=1
