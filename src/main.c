@@ -40,17 +40,25 @@ void main(void)
   volatile uint32_t delay = 0u;
 
   bsp_init();
+  
+  enableInterrupts();
+
   bsp_sleep();
   bsp_wakeup();
+  
+  RGB_LEDS_PWR(1);
+  for(delay = 0u; delay < 30000u; delay++) {}
+//  configure_rgb(9u, 0u, 1u, 0u);
+  send_rgb();
 
   /* Infinite loop */
-  while (1)
+  for(;;)
   {
     for(cnt = 0u; cnt < GREEN_LEDS_NUM; cnt++)
     {
-      green_led(ENABLE, cnt);
-      //for(delay = 0u; delay < 10000u; delay++) {}
-			for(delay = 0u; delay < 40u; delay++) {}
+      //green_led(ENABLE, cnt);
+      for(delay = 0u; delay < 30000u; delay++) {}
+      test_blink();
     }
   }
   
