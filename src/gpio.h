@@ -22,12 +22,14 @@
 #define GLEDS_GPIO_3        (GPIO_PIN_6)
 #define GLEDS_GPIO_4        (GPIO_PIN_7)
 #define GLEDS_GPIO_MASK     ( GLEDS_GPIO_0 | GLEDS_GPIO_1 | GLEDS_GPIO_2 | GLEDS_GPIO_3 | GLEDS_GPIO_4 )
-#define GLEDS_MAX_NUM       ((uint16_t) 20)
+#define GLEDS_NUM           ((uint16_t) 20)
 //RGB LEDs
 #define RGB_LEDS_PORT       (GPIOD)
 #define RGB_LEDS_PIN        (GPIO_PIN_3)
 #define RGB_LEDS_PWR_PORT   (GPIOA)
 #define RGB_LEDS_PWR_PIN    (GPIO_PIN_3)
+#define RGB_LEDS_NUM        ((uint16_t) 10)
+#define RGB_LED_BITS        ((uint16_t) 24)
 //Light sensor
 #define LS_POWER_EN_PORT    (GPIOD)
 #define LS_POWER_EN_PIN     (GPIO_PIN_4)
