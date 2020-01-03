@@ -40,4 +40,6 @@ void tim4_upd_irq(void);
 void configure_rgb(uint8_t led_num, uint8_t red, uint8_t green, uint8_t blue);
 void send_rgb(void);
 
+void test_rgb(void);
+
 #endif //__BSP_H

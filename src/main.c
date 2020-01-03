@@ -36,8 +36,14 @@
 
 void main(void)
 {
+  // CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV1);
+  // test_rgb();
+  // for(;;) {}
+
   uint16_t cnt = 0u;
   volatile uint32_t delay = 0u;
+
+  
 
   bsp_init();
   
@@ -49,7 +55,7 @@ void main(void)
   RGB_LEDS_PWR(1);
   for(delay = 0u; delay < 30000u; delay++) {}
 //  configure_rgb(9u, 0u, 1u, 0u);
-  send_rgb();
+//  send_rgb();
 
   /* Infinite loop */
   for(;;)

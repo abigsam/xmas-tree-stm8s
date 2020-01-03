@@ -296,3 +296,97 @@ void send_rgb(void)
     TIM4_ITConfig(TIM4_IT_UPDATE, ENABLE);
     enableInterrupts();
 }
+
+
+// #define RGBPIN_SET()        { GPIO_SET(RGB_LEDS_PORT, RGB_LEDS_PIN); }
+// #define RGBPIN_RESET()      { GPIO_RESET(RGB_LEDS_PORT, RGB_LEDS_PIN); }
+// //
+// #define SEND_0()            { RGBPIN_SET(); \
+//                               nop(); nop(); nop(); nop(); \
+//                               RGBPIN_RESET(); \
+//                               nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+//                               nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+//                             }
+// //
+// #define SEND_1()            { RGBPIN_SET(); \
+//                               nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+//                               nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+//                               RGBPIN_RESET(); \
+//                               nop(); nop(); nop(); nop(); \
+//                             }
+// //
+// #define SEND_TEST()         { /* Send green */ \
+//                               SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+//                               /* Send red */ \
+//                               SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+//                               /* Send blue */ \
+//                               SEND_0(); SEND_0(); SEND_1(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+//                             }
+// //
+// #define SEND_TEST2()        { /* Send green */ \
+//                               SEND_0(); SEND_0(); SEND_1(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+//                               /* Send red */ \
+//                               SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+//                               /* Send blue */ \
+//                               SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+//                             }
+
+void test_rgb(void)
+{
+//     uint16_t delay = 0u;
+//     GPIO_Init(RGB_LEDS_PORT, RGB_LEDS_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
+//     GPIO_Init(RGB_LEDS_PWR_PORT, RGB_LEDS_PWR_PIN, GPIO_MODE_OUT_PP_LOW_SLOW);
+//     //for(delay = 0u; delay < 30000u; delay++) {}
+//     RGB_LEDS_PWR(1);
+//     RGBPIN_RESET();
+//     for(delay = 0u; delay < 30000u; delay++) {}
+    
+//     //LED #1
+    
+//     //Send green
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+
+//     //Send red
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_1();
+//     SEND_1();
+//     SEND_1();
+//     SEND_1();
+
+//     //Send blue
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+//     SEND_0();
+     
+     
+//     //LED #2...#10
+//     SEND_TEST();
+//     SEND_TEST();
+//     SEND_TEST();
+//     SEND_TEST();
+//     SEND_TEST();
+//     SEND_TEST();
+//     SEND_TEST();
+//     SEND_TEST();
+//     SEND_TEST2();
+    
+//     RGBPIN_RESET();
+    
+//     nop();
+
+}
