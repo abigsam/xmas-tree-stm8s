@@ -19,8 +19,8 @@
 
 /* For RGB LEDs */
 #define TIM2_PRESCALLER     (TIM2_PRESCALER_1)
-#define TIM2_PERIOD         ((uint16_t) 21)
-#define TIM2_T0H            ((uint16_t) 7)
+#define TIM2_PERIOD         ((uint16_t) 19)
+#define TIM2_T0H            ((uint16_t) 4)
 #define TIM2_T1H            ((uint16_t) TIM2_PERIOD - TIM2_T0H)
 
 //Macroses
@@ -243,7 +243,7 @@ void configure_rgb(uint8_t led_num, uint8_t red, uint8_t green, uint8_t blue)
 {
     uint8_t *ptr = rgb_codes;
     if (led_num < RGB_LEDS_NUM) {
-        ptr += led_num*RGB_LED_BITS;
+        ptr += (RGB_LEDS_NUM - led_num - 1u)*RGB_LED_BITS; //First data for the first LED
         code_color(ptr, &blue);
         ptr += RGB_LED_BITS/3u;
         code_color(ptr, &red);
