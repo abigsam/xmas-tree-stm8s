@@ -16,11 +16,12 @@
 /* For green LEDs */
 #define TIM4_PRESCALLER     (TIM4_PRESCALER_32)
 #define TIM4_PERIOD         ((uint8_t) 83)
+//#define __USE_RGB_DIRECT_CONTROL /* Uncomment to activate RGB direct control macroses */
 
 /* For RGB LEDs */
 #define TIM2_PRESCALLER     (TIM2_PRESCALER_1)
-#define TIM2_PERIOD         ((uint16_t) 19)
-#define TIM2_T0H            ((uint16_t) 4)
+#define TIM2_PERIOD         ((uint16_t) 63)
+#define TIM2_T0H            ((uint16_t) 5)
 #define TIM2_T1H            ((uint16_t) TIM2_PERIOD - TIM2_T0H)
 
 //Macroses
@@ -298,95 +299,117 @@ void send_rgb(void)
 }
 
 
-// #define RGBPIN_SET()        { GPIO_SET(RGB_LEDS_PORT, RGB_LEDS_PIN); }
-// #define RGBPIN_RESET()      { GPIO_RESET(RGB_LEDS_PORT, RGB_LEDS_PIN); }
-// //
-// #define SEND_0()            { RGBPIN_SET(); \
-//                               nop(); nop(); nop(); nop(); \
-//                               RGBPIN_RESET(); \
-//                               nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
-//                               nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
-//                             }
-// //
-// #define SEND_1()            { RGBPIN_SET(); \
-//                               nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
-//                               nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
-//                               RGBPIN_RESET(); \
-//                               nop(); nop(); nop(); nop(); \
-//                             }
-// //
-// #define SEND_TEST()         { /* Send green */ \
-//                               SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
-//                               /* Send red */ \
-//                               SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
-//                               /* Send blue */ \
-//                               SEND_0(); SEND_0(); SEND_1(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
-//                             }
-// //
-// #define SEND_TEST2()        { /* Send green */ \
-//                               SEND_0(); SEND_0(); SEND_1(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
-//                               /* Send red */ \
-//                               SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
-//                               /* Send blue */ \
-//                               SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
-//                             }
+#ifdef __USE_RGB_DIRECT_CONTROL
+#define RGBPIN_SET()        { GPIO_SET(RGB_LEDS_PORT, RGB_LEDS_PIN); }
+#define RGBPIN_RESET()      { GPIO_RESET(RGB_LEDS_PORT, RGB_LEDS_PIN); }
+//
+#define SEND_0()            { RGBPIN_SET(); \
+                              nop(); nop(); nop(); nop(); \
+                              nop(); nop(); \
+                              RGBPIN_RESET(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                            }
+//
+#define SEND_1()            { RGBPIN_SET(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              nop(); nop(); nop(); nop(); nop(); nop(); nop(); \
+                              RGBPIN_RESET(); \
+                              nop(); nop(); nop(); nop(); \
+                              nop(); nop(); \
+                            }
+//
+#define SEND_TEST()         { /* Send green */ \
+                              SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+                              /* Send red */ \
+                              SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+                              /* Send blue */ \
+                              SEND_0(); SEND_0(); SEND_1(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+                            }
+//
+#define SEND_TEST2()        { /* Send green */ \
+                              SEND_0(); SEND_0(); SEND_1(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+                              /* Send red */ \
+                              SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+                              /* Send blue */ \
+                              SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); SEND_0(); \
+                            }
+//
+#endif
 
 void test_rgb(void)
 {
-//     uint16_t delay = 0u;
-//     GPIO_Init(RGB_LEDS_PORT, RGB_LEDS_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
-//     GPIO_Init(RGB_LEDS_PWR_PORT, RGB_LEDS_PWR_PIN, GPIO_MODE_OUT_PP_LOW_SLOW);
-//     //for(delay = 0u; delay < 30000u; delay++) {}
-//     RGB_LEDS_PWR(1);
-//     RGBPIN_RESET();
-//     for(delay = 0u; delay < 30000u; delay++) {}
+#ifdef __USE_RGB_DIRECT_CONTROL
+    uint16_t delay = 0u;
+    GPIO_Init(RGB_LEDS_PORT, RGB_LEDS_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
+    GPIO_Init(RGB_LEDS_PWR_PORT, RGB_LEDS_PWR_PIN, GPIO_MODE_OUT_PP_LOW_SLOW);
+    //for(delay = 0u; delay < 30000u; delay++) {}
+    RGB_LEDS_PWR(1);
+    RGBPIN_RESET();
+    for(delay = 0u; delay < 30000u; delay++) {}
     
-//     //LED #1
+    //LED #1
     
-//     //Send green
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
+    //Send green
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_1();
+    SEND_0();
+    SEND_0();
 
-//     //Send red
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_1();
-//     SEND_1();
-//     SEND_1();
-//     SEND_1();
+    //Send red
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
 
-//     //Send blue
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
-//     SEND_0();
+    //Send blue
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
+    SEND_0();
      
      
-//     //LED #2...#10
-//     SEND_TEST();
-//     SEND_TEST();
-//     SEND_TEST();
-//     SEND_TEST();
-//     SEND_TEST();
-//     SEND_TEST();
-//     SEND_TEST();
-//     SEND_TEST();
-//     SEND_TEST2();
+    //LED #2...#10
+    SEND_TEST();
+    SEND_TEST();
+    // SEND_TEST();
+    // SEND_TEST();
+    // SEND_TEST();
+    // SEND_TEST();
+    // SEND_TEST();
+    // SEND_TEST();
+    // SEND_TEST2();
     
-//     RGBPIN_RESET();
+    RGBPIN_RESET();
     
-//     nop();
-
+    nop();
+#endif
 }
