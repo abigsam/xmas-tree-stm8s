@@ -16,7 +16,6 @@
 /* For green LEDs */
 #define TIM4_PRESCALLER     (TIM4_PRESCALER_32)
 #define TIM4_PERIOD         ((uint8_t) 83)
-//#define __USE_RGB_DIRECT_CONTROL /* Uncomment to activate RGB direct control macroses */
 
 /* For RGB LEDs */
 #define TIM2_PRESCALLER     (TIM2_PRESCALER_1)
@@ -88,7 +87,8 @@ static void config_tim2(void)
  */
 static void code_color(uint8_t *ptr, uint8_t *color)
 {
-    for (uint8_t i = 0u; i < 8u; i++)
+	uint8_t i;
+    for (i = 0u; i < 8u; i++)
     {
         if ((*color) & ((uint8_t)1u << i)) {
             *(ptr + i) = TIM2_T1H;
@@ -105,6 +105,7 @@ static void code_color(uint8_t *ptr, uint8_t *color)
  */
 void bsp_init(void)
 {
+	uint8_t i;
     //Init GPIOs
     GPIO_Init(GREEN_LEDS_PORT, GLEDS_GPIO_MASK, GPIO_MODE_IN_FL_NO_IT);
     GPIO_Init(RGB_LEDS_PORT, RGB_LEDS_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
@@ -137,7 +138,7 @@ void bsp_init(void)
     config_tim2();
     ITC_SetSoftwarePriority(ITC_IRQ_TIM2_OVF, ITC_PRIORITYLEVEL_2);
 
-    for (uint8_t i = 0u; i < RGB_LEDS_NUM*RGB_LED_BITS; i++)
+    for (i = 0u; i < RGB_LEDS_NUM*RGB_LED_BITS; i++)
     {
         rgb_codes[i] = TIM2_T0H;
     }
@@ -291,10 +292,17 @@ void send_rgb(void)
 
     //Disable TIM2
     disableInterrupts();
+    
     TIM2CH2_TO_LOW();
     TIM2_Cmd(DISABLE);
+    
+    //Always clear counter !
+    TIM2->CNTRL = 0u;
+    TIM2->CNTRH = 0u;
+    
     TIM2_ITConfig(TIM2_IT_UPDATE, DISABLE);
     TIM4_ITConfig(TIM4_IT_UPDATE, ENABLE);
+    
     enableInterrupts();
 }
 
@@ -372,7 +380,7 @@ void test_rgb(void)
     SEND_0();
     SEND_0();
     SEND_0();
-    SEND_1();
+    SEND_0();
     SEND_0();
     SEND_0();
 
@@ -380,7 +388,7 @@ void test_rgb(void)
     SEND_0();
     SEND_0();
     SEND_0();
-    SEND_0();
+    SEND_1();
     SEND_0();
     SEND_0();
     SEND_0();
@@ -395,7 +403,6 @@ void test_rgb(void)
     SEND_0();
     SEND_0();
     SEND_0();
-     
      
     //LED #2...#10
     SEND_TEST();

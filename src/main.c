@@ -42,8 +42,9 @@ void main(void)
   for(;;) {}
 #endif
 
-  uint16_t cnt = 0u;
+  //uint16_t cnt = 0u;
   volatile uint32_t delay = 0u;
+  volatile uint8_t rgbcnt = 0u;
 
   bsp_init();
   enableInterrupts();
@@ -52,21 +53,60 @@ void main(void)
   bsp_wakeup();
   
   RGB_LEDS_PWR(1);
+  
+  while(1)
+  {
   for(delay = 0u; delay < 30000u; delay++) {}
-  configure_rgb(0u, 0u, 0u, 2u);
-  configure_rgb(1u, 0u, 2u, 0u);
-  configure_rgb(9u, 2u, 0u, 0u);
+  configure_rgb(0u, 0u, 1u, 0u);
   send_rgb();
+  for(delay = 0u; delay < 30000u; delay++) {}
+	
+  configure_rgb(0u, 1u, 1u, 0u);
+  send_rgb();
+  for(delay = 0u; delay < 30000u; delay++) {}
+  
+  configure_rgb(0u, 0u, 1u, 1u);
+  send_rgb();
+  for(delay = 0u; delay < 30000u; delay++) {}
+  
+  configure_rgb(0u, 0u, 1u, 0u);
+  send_rgb();
+  for(delay = 0u; delay < 30000u; delay++) {}
+  
+  configure_rgb(0u, 1u, 1u, 1u);
+  send_rgb();
+  for(delay = 0u; delay < 30000u; delay++) {}
+  
+}
+  //for(;;) {}
 
   /* Infinite loop */
   for(;;)
   {
-    for(cnt = 0u; cnt < GREEN_LEDS_NUM; cnt++)
-    {
+//    for(cnt = 0u; cnt < GREEN_LEDS_NUM; cnt++)
+//    {
       //green_led(ENABLE, cnt);
       for(delay = 0u; delay < 30000u; delay++) {}
       test_blink();
-    }
+      
+      if (rgbcnt == 0u) {
+        configure_rgb(0u, 0u, 0u, 0u);
+        configure_rgb(2u, 0u, 2u, 0u);
+        //configure_rgb(4u, 2u, 0u, 0u);
+        rgbcnt++;
+      } else if (rgbcnt == 1u) {
+        configure_rgb(0u, 0u, 0u, 0u);
+        configure_rgb(2u, 2u, 0u, 0u);
+        //configure_rgb(4u, 0u, 0u, 2u);
+        rgbcnt++;
+      } else if (rgbcnt == 2u) {
+        configure_rgb(0u, 0u, 0u, 0u);
+        configure_rgb(2u, 0u, 0u, 2u);
+        //configure_rgb(4u, 0u, 2u, 0u);
+        rgbcnt = 0u;
+      }
+      send_rgb();
+//    }
   }
   
 }

@@ -19,6 +19,7 @@
 
 //Defines
 #define GREEN_LEDS_NUM          ( GLEDS_NUM ) //Number of green LEDs
+//#define __USE_RGB_DIRECT_CONTROL /* Uncomment to activate RGB direct control macroses */
 
 //Macroses
 #define RGB_LEDS_PWR(s)         { GPIO_CONTROL(RGB_LEDS_PWR_PORT, RGB_LEDS_PWR_PIN, s); }   //COntrol power for RGB LEDs

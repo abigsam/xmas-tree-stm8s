@@ -281,7 +281,26 @@
                 "__EDG_CPP11_IL_EXTENSIONS_SUPPORTED=1",
                 "_DLIB_CONFIG_FILE_HEADER_NAME=\"DLib_Config_Normal.h\"",
                 "_DLIB_CONFIG_FILE_STRING=\"DLib_Config_Normal.h\"",
-                "__VERSION__=\"IAR C/C++ Compiler V3.11.1.207 for STM8\""
+                "__VERSION__=\"IAR C/C++ Compiler V3.11.1.207 for STM8\"",
+                "__eeprom=",
+                "__far=",
+                "__far_func=",
+                "__huge=",
+                "__huge_func=",
+                "__interrupt=",
+                "__intrinsic=",
+                "__monitor=",
+                "__near=",
+                "__near_func=",
+                "__no_init=",
+                "__noreturn=",
+                "__ramfunc=",
+                "__root=",
+                "__ro_placement=",
+                "__task=",
+                "__tiny=",
+                "__trap=",
+                "__weak="
             ],
             "includePath": [
                 "Libraries\\STM8S_StdPeriph_Driver\\inc",
@@ -292,7 +311,8 @@
             ],
             "forcedInclude": [],
             "cStandard": "${default}",
-            "cppStandard": "${default}"
+            "cppStandard": "${default}",
+            "compilerPath": ""
         }
     ]
 }

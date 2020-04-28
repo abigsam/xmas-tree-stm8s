@@ -299,8 +299,8 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
    if (0u == rgb_data_cnt)
    {
       TIM2->IER &= ~TIM2_IER_UIE;
-      TIM2->CCMR2 = (uint8_t)((uint8_t)(TIM2->CCMR2 & (uint8_t)(~TIM2_CCMR_OCM))  
-                          | (uint8_t)TIM2_FORCEDACTION_INACTIVE);
+//      TIM2->CCMR2 = (uint8_t)((uint8_t)(TIM2->CCMR2 & (uint8_t)(~TIM2_CCMR_OCM))  
+//                          | (uint8_t)TIM2_FORCEDACTION_INACTIVE);
       return;
    }
    //Decrement counter
