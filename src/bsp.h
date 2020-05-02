@@ -28,19 +28,17 @@
 #define RGB_LEDS_WRITE(b)       { GPIO_CONTROL(RGB_LEDS_PORT, RGB_LEDS_PIN, b); }           //Write 0 or 1 to RGB LEDs (connected to the chain)
 #define BUTTON_READ()           ( !GPIO_GET(BUTTON_PORT, BUTTON_PIN) )                      //Read button state
 
-
 // BSP functiones
 void bsp_init(void);
-void bsp_sleep(void);
-void bsp_wakeup(void);
-void green_led(FunctionalState led_st, uint16_t num);
+//Green LEDs control
+void green_led(uint16_t num, FunctionalState led_st);
+void green_led_all(FunctionalState led_st);
 void test_blink(void);
-
-void tim4_upd_irq(void);
-
+//RGB LEDs control
 void configure_rgb(uint8_t led_num, uint8_t red, uint8_t green, uint8_t blue);
 void send_rgb(void);
-
 void test_rgb(void);
+//Aux
+void tim4_upd_irq(void);
 
 #endif //__BSP_H

@@ -107,13 +107,39 @@ void bsp_init(void)
 {
 	uint8_t i;
     //Init GPIOs
-    GPIO_Init(GREEN_LEDS_PORT, GLEDS_GPIO_MASK, GPIO_MODE_IN_FL_NO_IT);
-    GPIO_Init(RGB_LEDS_PORT, RGB_LEDS_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
-    GPIO_Init(RGB_LEDS_PWR_PORT, RGB_LEDS_PWR_PIN, GPIO_MODE_OUT_PP_LOW_SLOW);
-    GPIO_Init(LS_POWER_EN_PORT, LS_POWER_EN_PIN, GPIO_MODE_OUT_PP_LOW_SLOW);
-    GPIO_Init(LS_OUTPUT_PORT, LS_OUTPUT_PIN, GPIO_MODE_IN_FL_NO_IT);
-    GPIO_Init(BUTTON_PORT, BUTTON_PIN, GPIO_MODE_IN_FL_IT);
-    GPIO_Init(BOOST_EN_PORT, BOOST_EN_PIN, GPIO_MODE_OUT_PP_LOW_SLOW);
+    // GPIO_Init(GREEN_LEDS_PORT, GLEDS_GPIO_MASK, GPIO_MODE_IN_FL_NO_IT);
+    GREEN_LEDS_PORT->DDR &= (uint8_t)(~GLEDS_GPIO_MASK); //input, float, npo interrupt
+
+    // GPIO_Init(RGB_LEDS_PORT, RGB_LEDS_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
+    RGB_LEDS_PORT->DDR |= (uint8_t)(RGB_LEDS_PIN); //Output
+    RGB_LEDS_PORT->CR1 |= (uint8_t)(RGB_LEDS_PIN); //Push-pull
+    // RGB_LEDS_PORT->CR2 &= (uint8_t)(~RGB_LEDS_PIN); //Fast
+
+    // GPIO_Init(RGB_LEDS_PWR_PORT, RGB_LEDS_PWR_PIN, GPIO_MODE_OUT_PP_LOW_SLOW);
+    RGB_LEDS_PWR_PORT->DDR |= (uint8_t)(RGB_LEDS_PWR_PIN); //Output
+    RGB_LEDS_PWR_PORT->CR1 |= (uint8_t)(RGB_LEDS_PWR_PIN); //Push-pull
+    // RGB_LEDS_PWR_PORT->CR2 |= (uint8_t)(RGB_LEDS_PWR_PIN); //Slow
+
+    // GPIO_Init(LS_POWER_EN_PORT, LS_POWER_EN_PIN, GPIO_MODE_OUT_PP_LOW_SLOW);
+    LS_POWER_EN_PORT->DDR |= (uint8_t)(LS_POWER_EN_PIN); //Output
+    LS_POWER_EN_PORT->CR1 |= (uint8_t)(LS_POWER_EN_PIN); //Push-pull
+    // LS_POWER_EN_PORT->CR2 |= (uint8_t)(LS_POWER_EN_PIN); //Slow
+
+    // GPIO_Init(LS_OUTPUT_PORT, LS_OUTPUT_PIN, GPIO_MODE_IN_FL_NO_IT);
+    LS_OUTPUT_PORT->DDR &= (uint8_t)(~LS_OUTPUT_PIN); //Input, float, no interrupt
+
+    // GPIO_Init(BOOST_EN_PORT, BOOST_EN_PIN, GPIO_MODE_OUT_PP_LOW_SLOW);
+    BOOST_EN_PORT->DDR |= (uint8_t)(BOOST_EN_PIN); //Output
+    BOOST_EN_PORT->CR1 |= (uint8_t)(BOOST_EN_PIN); //Push-pull
+    // BOOST_EN_PORT->CR2 |= (uint8_t)(BOOST_EN_PIN); //Slow
+
+    //Button input with external interrupt
+    // GPIO_Init(BUTTON_PORT, BUTTON_PIN, GPIO_MODE_IN_PU_IT);
+    BUTTON_PORT->DDR &= (uint8_t)(~BUTTON_PIN); //Input
+    BUTTON_PORT->CR1 |= (uint8_t)(BUTTON_PIN);  //Pull-up
+    BUTTON_PORT->CR2 |= (uint8_t)(BUTTON_PIN);  //External interrupt
+    EXTI->CR1 &= (uint8_t)(~EXTI_CR1_PDIS);
+    EXTI->CR1 |= (uint8_t)((uint8_t)(EXTI_SENSITIVITY_FALL_ONLY) << 6);
 
     //ADC input for light sensor
     ADC1_Init(ADC1_CONVERSIONMODE_SINGLE,
@@ -138,29 +164,10 @@ void bsp_init(void)
     config_tim2();
     ITC_SetSoftwarePriority(ITC_IRQ_TIM2_OVF, ITC_PRIORITYLEVEL_2);
 
-    for (i = 0u; i < RGB_LEDS_NUM*RGB_LED_BITS; i++)
-    {
+    //Configure RGB LEDs
+    for (i = 0u; i < RGB_LEDS_NUM*RGB_LED_BITS; i++) {
         rgb_codes[i] = TIM2_T0H;
     }
-}
-
-
-/**
- * @brief Switch all into a sleep mode
- * 
- */
-void bsp_sleep(void)
-{
-
-}
-
-
-/**
- * @brief Run commands after exit from sleep mode
- * 
- */
-void bsp_wakeup(void)
-{
 
 }
 
@@ -168,28 +175,29 @@ void bsp_wakeup(void)
 /**
  * @brief Enable/disable green LED
  * 
- * @param led_st    LED state, can be one of:
- *                  DISABLE, ENABLE
  * @param num       Number of LED, can be in range
  *                  0..(GLEDS_NUM-1)
+ * @param led_st    LED state, can be one of:
+ *                  DISABLE, ENABLE
  */
-void green_led(FunctionalState led_st, uint16_t num)
+void green_led(uint16_t num, FunctionalState led_st)
 {
-    static uint8_t ddr = 0u, odr = 0u, cr1 = 0u;
+    gled_state[num] = (ENABLE == led_st) ? GLEDS_ARRAY[0][num] : 0u;
+}
 
-    ddr = GREEN_LEDS_PORT->DDR & ~GLEDS_GPIO_MASK;
-    odr = GREEN_LEDS_PORT->ODR & ~GLEDS_GPIO_MASK;
-    cr1 = GREEN_LEDS_PORT->CR1 & ~GLEDS_GPIO_MASK;
 
-    if (led_st != DISABLE && (num < GLEDS_NUM)) {
-        odr |= GLEDS_ARRAY[0][num]; //GPIO states
-        ddr |= GLEDS_ARRAY[1][num]; //GPIO HiZ
-        cr1 |= GLEDS_ARRAY[1][num]; //GPIO to push-pull
+/**
+ * @brief Enable or disable all green LEDs
+ * 
+ * @param led_st    LED state, can be one of:
+ *                  DISABLE, ENABLE
+ */
+void green_led_all(FunctionalState led_st)
+{
+    uint8_t cnt = 0u;
+    for(cnt = 0u; cnt < GLEDS_NUM; cnt++) {
+        gled_state[cnt] = (ENABLE == led_st) ? GLEDS_ARRAY[0][cnt] : 0u;
     }
-
-    GREEN_LEDS_PORT->DDR = ddr;
-    GREEN_LEDS_PORT->ODR = odr;
-    GREEN_LEDS_PORT->CR1 = cr1;
 }
 
 

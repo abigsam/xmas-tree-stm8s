@@ -42,73 +42,67 @@ void main(void)
   for(;;) {}
 #endif
 
-  //uint16_t cnt = 0u;
+  uint16_t cnt = 0u;
   volatile uint32_t delay = 0u;
   volatile uint8_t rgbcnt = 0u;
+  uint8_t st = 0u;
 
   bsp_init();
-  enableInterrupts();
 
-  bsp_sleep();
-  bsp_wakeup();
+  enableInterrupts();
+  halt();
   
+  // for(;;) {
+  //   // test_blink();
+  //   green_led_all(ENABLE);
+  //   for(delay = 0u; delay < 30000u; delay++) {}
+  //   green_led_all(DISABLE);
+  //   for(delay = 0u; delay < 30000u; delay++) {}
+  // }
+
+  for(;;) {
+    for(cnt = 0; cnt < GLEDS_NUM; cnt++) {
+      // green_led(cnt, ENABLE);
+      // for(delay = 0u; delay < 10000u; delay++) {}
+      // green_led(cnt, DISABLE);
+      // for(delay = 0u; delay < 1000u; delay++) {}
+      if (st) {
+        green_led(cnt, DISABLE);
+      } else {
+        green_led(cnt, ENABLE);
+      }
+      for(delay = 0u; delay < 3000u; delay++) {}
+    }
+    st = !st;
+  }
+
   RGB_LEDS_PWR(1);
   
-  while(1)
-  {
-  for(delay = 0u; delay < 30000u; delay++) {}
-  configure_rgb(0u, 0u, 1u, 0u);
-  send_rgb();
-  for(delay = 0u; delay < 30000u; delay++) {}
-	
-  configure_rgb(0u, 1u, 1u, 0u);
-  send_rgb();
-  for(delay = 0u; delay < 30000u; delay++) {}
-  
-  configure_rgb(0u, 0u, 1u, 1u);
-  send_rgb();
-  for(delay = 0u; delay < 30000u; delay++) {}
-  
-  configure_rgb(0u, 0u, 1u, 0u);
-  send_rgb();
-  for(delay = 0u; delay < 30000u; delay++) {}
-  
-  configure_rgb(0u, 1u, 1u, 1u);
-  send_rgb();
-  for(delay = 0u; delay < 30000u; delay++) {}
-  
-}
-  //for(;;) {}
-
   /* Infinite loop */
   for(;;)
   {
-//    for(cnt = 0u; cnt < GREEN_LEDS_NUM; cnt++)
-//    {
-      //green_led(ENABLE, cnt);
-      for(delay = 0u; delay < 30000u; delay++) {}
-      test_blink();
-      
-      if (rgbcnt == 0u) {
-        configure_rgb(0u, 0u, 0u, 0u);
-        configure_rgb(2u, 0u, 2u, 0u);
-        //configure_rgb(4u, 2u, 0u, 0u);
-        rgbcnt++;
-      } else if (rgbcnt == 1u) {
-        configure_rgb(0u, 0u, 0u, 0u);
-        configure_rgb(2u, 2u, 0u, 0u);
-        //configure_rgb(4u, 0u, 0u, 2u);
-        rgbcnt++;
-      } else if (rgbcnt == 2u) {
-        configure_rgb(0u, 0u, 0u, 0u);
-        configure_rgb(2u, 0u, 0u, 2u);
-        //configure_rgb(4u, 0u, 2u, 0u);
-        rgbcnt = 0u;
-      }
-      send_rgb();
-//    }
+    for(delay = 0u; delay < 30000u; delay++) {}
+    configure_rgb(0u, 0u, 1u, 0u);
+    configure_rgb(1u, 0u, 100u, 0u);
+    send_rgb();
+    for(delay = 0u; delay < 30000u; delay++) {}
+    
+    configure_rgb(0u, 1u, 1u, 0u);
+    send_rgb();
+    for(delay = 0u; delay < 30000u; delay++) {}
+    
+    configure_rgb(0u, 0u, 1u, 1u);
+    send_rgb();
+    for(delay = 0u; delay < 30000u; delay++) {}
+    
+    configure_rgb(0u, 0u, 1u, 0u);
+    send_rgb();
+    for(delay = 0u; delay < 30000u; delay++) {}
+    
+    configure_rgb(0u, 1u, 1u, 1u);
+    send_rgb();
+    for(delay = 0u; delay < 30000u; delay++) {}
   }
-  
 }
 
 #ifdef USE_FULL_ASSERT
