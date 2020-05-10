@@ -97,6 +97,7 @@ INTERRUPT_HANDLER(AWU_IRQHandler, 1)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  volatile uint8_t tmp = AWU->CSR;
 }
 
 /**

@@ -28,17 +28,27 @@
 #define TIM2CH2_TO_HIGH()   { TIM2_ForcedOC2Config(TIM2_FORCEDACTION_ACTIVE); }
 #define TIM2CH2_TO_LOW()    { TIM2_ForcedOC2Config(TIM2_FORCEDACTION_INACTIVE); }
 
+//
+#define TIM4_PRE_CNT_DIV        (6u)    //For ~1 ms TIM4 tick
+// #define SHORT_PRESS_DET     ((uint8_t) 0x1)
+// #define LONG_PRESS_DET      ((uint8_t) 0x2)
+
 //Conatant array for control green LEDs using "charlieplexing"
 const uint8_t GLEDS_ARRAY[2u][GLEDS_NUM] = {
     { 0x08, 0x10, 0x10, 0x20, 0x20, 0x40, 0x40, 0x80, 0x80, 0x08, 0x20, 0x80, 0x10, 0x40, 0x08, 0x40, 0x08, 0x20,  0x10, 0x80 }, //GPIO out state
     { 0x18, 0x18, 0x30, 0x30, 0x60, 0x60, 0xc0, 0xc0, 0x88, 0x88, 0xa0, 0xa0, 0x50, 0x50, 0x48, 0x48, 0x28, 0x28,  0x90, 0x90 }  //GPIO HiZ state
 };
 
-
 //Internal variables
 static uint8_t gled_state[GLEDS_NUM] = { 0u };
 uint8_t rgb_codes[RGB_LEDS_NUM*RGB_LED_BITS] = { TIM2_T0H };
 uint8_t rgb_data_cnt = 0u;
+//Button counters
+uint16_t bsp_pressed = 0u;
+uint8_t button_state = 0u;
+uint8_t tim4_pre_cnt = 0u;
+//Externed variables
+uint16_t tim4_tick_ext;
 
 //Internal functions
 static void config_tim4(void);
@@ -159,6 +169,7 @@ void bsp_init(void)
 
     //Config TIM4
     config_tim4();
+    tim4_tick_ext = 0u;
 
     //Configure TIM2
     config_tim2();
@@ -238,6 +249,14 @@ void tim4_upd_irq(void)
 
     led_cnt++;
     if ( (GLEDS_NUM - led_cnt) == 0u ) { led_cnt = 0u; }
+
+    //TIM4 ticks
+    if (tim4_pre_cnt < TIM4_PRE_CNT_DIV) {
+        tim4_pre_cnt++;
+    } else {
+        tim4_pre_cnt = 0u;
+        tim4_tick_ext++;
+    }
 }
 
 

@@ -20,13 +20,19 @@
 //Defines
 #define GREEN_LEDS_NUM          ( GLEDS_NUM ) //Number of green LEDs
 //#define __USE_RGB_DIRECT_CONTROL /* Uncomment to activate RGB direct control macroses */
+#define PRESSED_COUNT           (18u)
+#define UNPRESSED_COUNT         (180u)
+#define SHORT_PRESS             ((uint16_t)PRESSED_COUNT * 6)
+#define LONG_PRESS              ((((uint16_t)PRESSED_COUNT) << 2) * 5)
 
 //Macroses
 #define RGB_LEDS_PWR(s)         { GPIO_CONTROL(RGB_LEDS_PWR_PORT, RGB_LEDS_PWR_PIN, s); }   //COntrol power for RGB LEDs
 #define LIGHT_SENSOR_PWR(s)     { GPIO_CONTROL(LS_POWER_EN_PORT, LS_POWER_EN_PIN, s); }     //COntrol power for light sensor
 #define BOOST_PWR(s)            { GPIO_CONTROL(BOOST_EN_PORT, BOOST_EN_PIN, s); }           //Control boost converter
 #define RGB_LEDS_WRITE(b)       { GPIO_CONTROL(RGB_LEDS_PORT, RGB_LEDS_PIN, b); }           //Write 0 or 1 to RGB LEDs (connected to the chain)
-#define BUTTON_READ()           ( !GPIO_GET(BUTTON_PORT, BUTTON_PIN) )                      //Read button state
+#define BUTTON_IS_PRESSED()     ( !GPIO_GET(BUTTON_PORT, BUTTON_PIN) )                      //Check if button is pressed
+#define BUTTON_IRQ_EN()         { BUTTON_PORT->CR2 |= (uint8_t)(BUTTON_PIN); }
+#define BUTTON_IRQ_DIS()        { BUTTON_PORT->CR2 &= (uint8_t)(~BUTTON_PIN); }
 
 // BSP functiones
 void bsp_init(void);
