@@ -226,6 +226,43 @@ void test_blink(void)
 
 
 /**
+ * @brief 
+ * 
+ * @param t 
+ * @param interval 
+ */
+void timer_set(struct timer *t, uint16_t interval)
+{
+    t->start = tim4_tick_ext;
+    if ((TIM4_TICK_MAX - t->start) >= interval) {
+        t->interval = interval;
+        t->sign = 0u;
+    } else {
+        t->interval = interval - (TIM4_TICK_MAX - t->start);
+        t->start = 0u;
+        t->sign = 1u;
+    }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param t 
+ * @return uint16_t 
+ */
+uint8_t timer_expired(struct timer *t)
+{
+    if (t->sign) {
+        t->sign = tim4_tick_ext != TIM4_TICK_MAX;
+        return 0u;
+    } else {
+        return (tim4_tick_ext - t->start) >= t->interval;
+    }
+}
+
+
+/**
  * @brief Update IRQ for TIM4
  * 
  */
