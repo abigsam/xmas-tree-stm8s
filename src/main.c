@@ -102,16 +102,13 @@ static PT_THREAD(button_check(struct pt *pt))
 {
   static uint16_t tstamp = 0u, delta = 0u;
   static enum fsm_state state = ENABLE_DELAY;
-  static uint8_t prog_num_next = 0u;
 
   PT_BEGIN(pt);
-  prog_num_next = 1u;
   for(;;) {
-    if (0u == prog_num)
-      prog_num = prog_num_next;
     
     //Restart FSM
     if (!system_enabled) {
+      prog_num = 1u;
       system_enabled = 1u;
       state = ENABLE_DELAY;
     }
@@ -155,7 +152,6 @@ static PT_THREAD(button_check(struct pt *pt))
     }
     else if (LONG_PRESS_DET == state) {
       //Long press
-      // prog_num_next = 1u;
       prog_num = 0u;
       system_enabled = 0u;
       PT_SEM_SIGNAL(pt, &disable_all_sem);
