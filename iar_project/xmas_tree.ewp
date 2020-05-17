@@ -1667,6 +1667,12 @@
             <name>$PROJ_DIR$\..\src\main.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\src\prj_threads.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\prj_threads.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\src\stm8s_it.c</name>
         </file>
     </group>
